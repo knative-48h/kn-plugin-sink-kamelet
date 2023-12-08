@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2021 The Knative Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package command
 
 import (
@@ -5,6 +21,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	camelv1 "github.com/apache/camel-k/v2/pkg/apis/camel/v1"
 	camelkv1 "github.com/apache/camel-k/v2/pkg/client/camel/clientset/versioned/typed/camel/v1"
 	"github.com/spf13/cobra"
@@ -13,9 +30,10 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	knerrors "knative.dev/client-pkg/pkg/errors"
 
-	"knative.dev/client-pkg/pkg/kn/commands"
 	"path/filepath"
 	"strings"
+
+	"knative.dev/client-pkg/pkg/kn/commands"
 )
 
 var bindingCreateExample = `
@@ -34,6 +52,7 @@ func newBindingCreateCommand(p *KameletPluginParams) *cobra.Command {
 	var broker string
 	var channel string
 	var service string
+	//var kameletNamespace string
 	var cloudEventsOverride []string
 	var cloudEventsSpecVersion string
 	var cloudEventsType string
@@ -95,6 +114,7 @@ func newBindingCreateCommand(p *KameletPluginParams) *cobra.Command {
 	flags.StringVar(&cloudEventsSpecVersion, "ce-spec", "", "Customize cloud events spec version provided to the binding source.")
 	flags.StringVar(&cloudEventsType, "ce-type", "", "Customize cloud events type provided to the binding source.")
 	flags.StringVar(&sourceBrokerType, "broker-type", "", "Customize broker type provided to the binding source.")
+	//flags.StringVarP(&kameletNamespace, "kamelet-namespace", "kn", "", "Namespace where the kamelet is located.")
 	flags.StringArrayVar(&cloudEventsOverride, "ce-override", nil, `Customize cloud events property in the form of "<key>=<value>"`)
 	return cmd
 
@@ -195,10 +215,13 @@ func createBinding(client camelkv1.CamelV1Interface, ctx context.Context, namesp
 		}
 	}
 	if existed {
-		_, _ = fmt.Fprintf(options.CmdOut, "kamelet binding %q updated\n", name)
-	} else {
-		_, _ = fmt.Fprintf(options.CmdOut, "kamelet binding %q created\n", name)
+		fmt.Printf("hhelo")
 	}
+	//if existed {
+	//	_, _ = fmt.Fprintf(options.CmdOut, "kamelet binding %q updated\n", name)
+	//} else {
+	//	_, _ = fmt.Fprintf(options.CmdOut, "kamelet binding %q created\n", name)
+	//}
 
 	return nil
 }

@@ -33,5 +33,6 @@ func NewBindingCommand(p *KameletPluginParams) *cobra.Command {
 	}
 
 	cmd.AddCommand(newBindingCreateCommand(p))
+	cmd.AddCommand(newBindingDeleteCommand(p))
 	return cmd
 }
