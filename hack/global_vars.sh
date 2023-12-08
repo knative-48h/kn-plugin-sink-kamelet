@@ -16,7 +16,7 @@
 # you are creating
 
 # Name of the plugin
-PLUGIN="kn-sample"
+PLUGIN="kn-sink-kamelet"
 
 # Directories containing go code which needs to be formatted
 SOURCE_DIRS="cmd pkg internal"

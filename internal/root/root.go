@@ -15,20 +15,33 @@
 package root
 
 import (
+	"context"
+
 	"github.com/spf13/cobra"
-	"knative.dev/kn-plugin-sample/internal/command"
+	"knative.dev/kn-plugin-sink-kamelet/internal/command"
 )
 
-// NewSourceKafkaCommand represents the plugin's entrypoint
-func NewRootCommand() *cobra.Command {
+// NewSinkKameletCommand represents the plugin's entrypoint
+func NewSinkKameletCommand() *cobra.Command {
 
 	var rootCmd = &cobra.Command{
-		Use:   "kn-sample",
-		Short: "Sample kn plugin printing out a nice message",
-		Long:  `Longer description of this fantastic plugin that can go over several lines.`,
+		Use:   "kn-sink-kamelet",
+		Short: "Knative eventing Kamelet sink plugin",
+		Long:  `Plugin manages Kamelets and Pipes as Knative eventing sinks.`,
 	}
 
-	rootCmd.AddCommand(command.NewPrintCommand())
+	ctx, cancel := context.WithCancel(context.Background())
+
+	p := &command.KameletPluginParams{
+		Context:       ctx,
+		ContextCancel: cancel,
+	}
+	p.Initialize()
+
+	rootCmd.AddCommand(command.NewListCommand(p))
+	rootCmd.AddCommand(command.NewDescribeCommand(p))
+	//rootCmd.AddCommand(command.NewBindCommand(p))
+	rootCmd.AddCommand(command.NewBindingCommand(p))
 	rootCmd.AddCommand(command.NewVersionCommand())
 
 	return rootCmd

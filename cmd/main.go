@@ -18,15 +18,16 @@ import (
 	"fmt"
 	"os"
 
-	"knative.dev/kn-plugin-sample/internal/root"
+	"knative.dev/kn-plugin-sink-kamelet/internal/root"
 )
 
 func main() {
-	err := root.NewRootCommand().Execute()
+	err := root.NewSinkKameletCommand().Execute()
 	if err != nil {
 		if err.Error() != "subcommand is required" {
 			fmt.Fprintln(os.Stderr, err)
 		}
 		os.Exit(1)
 	}
+	return
 }

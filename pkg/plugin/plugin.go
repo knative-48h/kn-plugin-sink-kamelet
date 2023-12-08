@@ -17,7 +17,7 @@ package plugin
 import (
 	"os"
 
-	"knative.dev/kn-plugin-sample/internal/root"
+	"knative.dev/kn-plugin-sink-kamelet/internal/root"
 
 	knplugin "knative.dev/client-pkg/pkg/kn/plugin"
 )
@@ -30,17 +30,17 @@ type plugin struct{}
 
 // Name returns the plugin's name
 func (pl *plugin) Name() string {
-	return "kn-sample"
+	return "kn-sink-kamelet"
 }
 
 // Execute represents the plugin's entrypoint when called through kn
 func (pl *plugin) Execute(args []string) error {
-	cmd := root.NewRootCommand()
+	cmd := root.NewSinkKameletCommand()
 	oldArgs := os.Args
 	defer (func() {
 		os.Args = oldArgs
 	})()
-	os.Args = append([]string{"kn-sample"}, args...)
+	os.Args = append([]string{"kn-sink-kamelet"}, args...)
 	return cmd.Execute()
 }
 
@@ -51,7 +51,7 @@ func (pl *plugin) Description() (string, error) {
 
 // CommandParts defines for plugin is executed from kn
 func (pl *plugin) CommandParts() []string {
-	return []string{"sample"}
+	return []string{"sink", "kamelet"}
 }
 
 // Path is empty because its an internal plugins
